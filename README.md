@@ -17,7 +17,7 @@ On the configured Mac, **Performance / Balanced / Quality** use the locally inst
 - Keyboard-accessible buttons, native modal dialogs, focus outlines and status announcements.
 
 ## Important limitations
-This is **not a working Windows-game launcher**. A normal browser cannot directly invoke Wine or run Windows `.exe` files. Install downloads nothing; Play starts a UI-only demo state. Presets do not change system or game performance. There is no native bridge, Wine runtime, account connection, hardware detection, or real compatibility testing.
+This is **not a general Windows-game launcher**. A normal browser cannot directly invoke Wine or run Windows `.exe` files. Demo-game Install and Play remain UI-only. Only the Path of Exile card on the configured Mac connects to the installed bridge; other game presets do not change system or game performance. There is no bundled Wine runtime, account connection, hardware detection, or general compatibility testing.
 
 Except for the Path of Exile app-launch card, bundled games and compatibility labels are fictional demo data. Ready / Experimental are not real test results. User-added games are Untested. No paid services, analytics, external images or dependencies are used.
 
