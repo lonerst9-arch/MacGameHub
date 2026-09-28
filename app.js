@@ -24,14 +24,29 @@ function openGame(id){selected=state.games.find(g=>g.id===id);$('#detail-title')
 function updateDetail(){
  const g=selected;if(!g)return;const real=g.id==='poe-real';
  document.querySelector('.presets').hidden=false;document.querySelector('#detail h3').hidden=false;$('#preset-note').hidden=false;
- $('#detail .notice').textContent=real?'Performance, Balanced and Quality now update the real Path of Exile config through MacGameHub Bridge. The current config is backed up before each change. Close the game before changing preset, then reopen it.':'This is a UI simulation. Compatibility labels are illustrative, not tested results. Your browser cannot run Wine or Windows executables.';
+ $('#detail .notice').textContent=real?'MacGameHub makes setup simple: choose Performance, Balanced or Quality, then start the game. We configure Path of Exile through the local Bridge and back up the current config first. If GameHub is missing, Start Game opens its official download page.':'This is a UI simulation. Compatibility labels are illustrative, not tested results. Your browser cannot run Wine or Windows executables.';
  document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.toggle('selected',b.dataset.preset===g.preset);b.setAttribute('aria-pressed',String(b.dataset.preset===g.preset));});
  $('#preset-note').textContent=real?'Choose a preset, approve Open MacGameHub Bridge if prompted, then open the game.':presetNotes[g.preset]||presetNotes.Balanced;
  $('#favorite').textContent=g.favorite?'♥ Favorited':'♡ Favorite';$('#favorite').setAttribute('aria-pressed',String(g.favorite));
- if(real){$('#launch').disabled=false;$('#launch').textContent='▶ Open in GameHub';$('#game-status').textContent='Preset controls are connected to the local game config.';return;}
+ if(real){$('#launch').disabled=false;$('#launch').textContent='▶ Start Game';$('#game-status').textContent='Easy setup: choose a preset once, then start playing.';return;}
  const job=jobs.get(g.id);$('#launch').disabled=job==='install';$('#launch').textContent=job==='install'?'Installing demo…':job==='play'?'■ Stop demo':g.installed?'▶ Play demo':'↓ Install demo';$('#game-status').textContent=job==='play'?'Demo session running — no executable was launched.':job==='install'?'Simulating installation — no files are downloaded.':g.installed?'Installed in this simulated library.':'Available to install in the simulated library.';
 }
-$('#launch').onclick=()=>{const g=selected;if(g.id==='poe-real'){window.location.href='gamehub://launch/steam/238960';$('#game-status').textContent='Launch request sent. Check GameHub or approve your browser’s Open GameHub prompt. This website cannot confirm that the game started.';return;}if(jobs.get(g.id)==='play'){jobs.delete(g.id);updateDetail();return;}if(g.installed){jobs.set(g.id,'play');updateDetail();return;}jobs.set(g.id,'install');updateDetail();setTimeout(()=>{g.installed=true;jobs.delete(g.id);save();render();if(selected?.id===g.id)updateDetail();toast(g.title+' demo installation complete');},1800);};
+$('#launch').onclick=()=>{
+ const g=selected;
+ if(g.id==='poe-real'){
+  let handedOff=false;
+  const cancelFallback=()=>{handedOff=true;window.removeEventListener('blur',cancelFallback);document.removeEventListener('visibilitychange',onVisibility);};
+  const onVisibility=()=>{if(document.hidden)cancelFallback();};
+  window.addEventListener('blur',cancelFallback,{once:true});document.addEventListener('visibilitychange',onVisibility);
+  $('#game-status').textContent='Opening GameHub… If it is not installed, we will take you to the official download page.';
+  window.location.href='gamehub://launch/steam/238960';
+  setTimeout(()=>{window.removeEventListener('blur',cancelFallback);document.removeEventListener('visibilitychange',onVisibility);if(!handedOff&&document.visibilityState==='visible')window.location.href='https://www.gamemac.com/en';},2500);
+  return;
+ }
+ if(jobs.get(g.id)==='play'){jobs.delete(g.id);updateDetail();return;}
+ if(g.installed){jobs.set(g.id,'play');updateDetail();return;}
+ jobs.set(g.id,'install');updateDetail();setTimeout(()=>{g.installed=true;jobs.delete(g.id);save();render();if(selected?.id===g.id)updateDetail();toast(g.title+' demo installation complete');},1800);
+};
 $('#favorite').onclick=()=>{selected.favorite=!selected.favorite;save();updateDetail();render();};
 document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{selected.preset=b.dataset.preset;save();if(selected.id==='poe-real'){window.location.href=`macgamehub://preset/${b.dataset.preset.toLowerCase()}`;$('#game-status').textContent=`${b.dataset.preset} preset request sent to MacGameHub Bridge. Close and reopen the game to use it.`;}else{updateDetail();}});
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(n=>{n.classList.toggle('active',n===b);n.setAttribute('aria-pressed',String(n===b));});render();});

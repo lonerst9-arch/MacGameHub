@@ -6,6 +6,8 @@ An independent, macOS-inspired dark game-launcher **UI prototype** made with HTM
 
 The Path of Exile card has an **Open in GameHub** button using `gamehub://launch/steam/238960`. It hands off to the installed GameHub macOS application; approve the browser app-opening prompt if shown. GameHub and the Steam game must already be installed and configured. This is a real app handoff, not browser execution. The website cannot detect installation, launch success or game performance. Other cards remain fictional demos. No local server, custom helper, uploaded files or credentials are required.
 
+If the browser remains on the page after the launch request, MacGameHub assumes GameHub is unavailable and redirects to the official GameHub for Mac page at `https://www.gamemac.com/en`. Browser security prevents definitive installed-app detection, so switching focus to GameHub cancels this fallback.
+
 On the configured Mac, **Performance / Balanced / Quality** use the locally installed `MacGameHub Bridge.app` and the `macgamehub://` URL scheme. The bridge updates the real Path of Exile `production_Config.ini` inside GameHub container 5 and creates `production_Config.ini.macgamehub-backup` before every change. Close the game before changing preset and reopen it afterward. These controls require the bridge installed at `~/Applications/MacGameHub Bridge.app`; on other computers they remain unavailable until that local helper is installed and configured for the correct GameHub container.
 
 ## What works
