@@ -2,6 +2,10 @@
 
 An independent, macOS-inspired dark game-launcher **UI prototype** made with HTML, CSS, and vanilla JavaScript. Inspired by the general launcher experience of GameHub/Highball; not affiliated with either product.
 
+## Open Path of Exile on your Mac
+
+The Path of Exile card has an **Open in GameHub** button using `gamehub://launch/steam/238960`. It hands off to the installed GameHub macOS application; approve the browser app-opening prompt if shown. GameHub and the Steam game must already be installed and configured. This is a real app handoff, not browser execution. The website cannot detect installation, launch success or game performance. Other cards remain fictional demos. No local server, custom helper, uploaded files or credentials are required.
+
 ## What works
 - Responsive game library, title search, alphabetical sorting, installed/favorites views and compatibility filters.
 - Add Game dialog with title, genre, and source. Entries stay in this browser.
@@ -13,7 +17,7 @@ An independent, macOS-inspired dark game-launcher **UI prototype** made with HTM
 ## Important limitations
 This is **not a working Windows-game launcher**. A normal browser cannot directly invoke Wine or run Windows `.exe` files. Install downloads nothing; Play starts a UI-only demo state. Presets do not change system or game performance. There is no native bridge, Wine runtime, account connection, hardware detection, or real compatibility testing.
 
-All bundled game names, descriptions, cover art and compatibility labels are fictional, illustrative demo data. Ready / Experimental are not real test results. User-added games are Untested. No paid services, analytics, external images or dependencies are used.
+Except for the Path of Exile app-launch card, bundled games and compatibility labels are fictional demo data. Ready / Experimental are not real test results. User-added games are Untested. No paid services, analytics, external images or dependencies are used.
 
 ## Preview locally
 Open `index.html` in a modern browser, or serve this folder:
